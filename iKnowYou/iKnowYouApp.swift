@@ -13,5 +13,6 @@ struct iKnowYouApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: [Photo.self])
     }
 }
