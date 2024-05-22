@@ -34,6 +34,8 @@ struct ContentView: View {
     @Query private var friends: [Friend]
     @Environment(\.modelContext) var modelContext
     
+    var locationFetcher = LocationFetcher()
+    
     var body: some View {
         NavigationStack {
             List {
@@ -56,6 +58,20 @@ struct ContentView: View {
                 PhotoCard(friend: friend)
                     .frame(width: .infinity, height: 600)
             }
+            
+            VStack {
+                        Button("Start Tracking Location") {
+                            locationFetcher.start()
+                        }
+
+                        Button("Read Location") {
+                            if let location = locationFetcher.lastKnownLocation {
+                                print("Your location is \(location)")
+                            } else {
+                                print("Your location is unknown")
+                            }
+                        }
+                    }
         }
     }
     

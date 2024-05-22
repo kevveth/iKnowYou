@@ -24,6 +24,8 @@ struct AddNewPhotoView: View {
     @State var name: String = ""
     @State var imageData: Data? = nil
     
+    var locationFetcher = LocationFetcher()
+    
     init(selectedImage: PhotosPickerItem? = nil) {
         self.selectedImage = selectedImage
     }
