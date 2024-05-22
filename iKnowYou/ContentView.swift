@@ -8,57 +8,65 @@
 import SwiftUI
 import SwiftData
 
-import CoreImage
-import PhotosUI
-import StoreKit
-
 @Model
-class Photo {
-    var name: String?
+class Friend: Hashable {
+    var name: String
     @Attribute(.externalStorage) var image: Data?
     
-    init(name: String? = nil, image: Data? = nil) {
+    init(name: String = "New Friend", image: Data? = nil) {
         self.name = name
         self.image = image
+    }
+    
+    static var example: Friend {
+        let photo = Friend()
+        photo.name = "Red Panda"
+        
+        let uiImage = UIImage(resource: .redpanda)
+        let imageData = uiImage.pngData()
+        photo.image = imageData
+        
+        return photo
     }
 }
 
 struct ContentView: View {
-    @Query private var photos: [Photo]
-    
-    @State private var selectedImage: PhotosPickerItem?
-    @State private var proccessedImage: Image?
+    @Query private var friends: [Friend]
+    @Environment(\.modelContext) var modelContext
     
     var body: some View {
         NavigationStack {
-            VStack {
-                PhotosPicker(selection: $selectedImage)
-                {
-                    if let proccessedImage {
-                        proccessedImage
-                            .resizable()
-                            .scaledToFill()
-                    } else {
-                        ContentUnavailableView("No Picture", systemImage: "photo.badge.plus", description: Text("Tap to import a photo"))
+            List {
+                ForEach(friends) { friend in
+                    NavigationLink(friend.name, value: friend)
+                }
+                .onDelete(perform: deletePhoto)
+            }
+            .navigationTitle("IKnowYou")
+            .toolbar {
+                ToolbarItem {
+                    NavigationLink {
+                        AddNewPhotoView()
+                    } label: {
+                        Image(systemName: "plus")
                     }
                 }
-                .onChange(of: selectedImage, loadImage)
-                .border(.green, width: 2)
             }
-            .padding()
+            .navigationDestination(for: Friend.self) { friend in
+                PhotoCard(friend: friend)
+                    .frame(width: .infinity, height: 600)
+            }
         }
     }
     
-    func loadImage() {
-        Task {
-            guard let imageData = try await selectedImage?.loadTransferable(type: Data.self) else { return }
-            guard let inputImage = UIImage(data: imageData) else { return }
-            proccessedImage = Image(uiImage: inputImage)
-            
+    func deletePhoto(_ indexSet: IndexSet) {
+        for index in indexSet {
+            modelContext.delete(friends[index])
         }
     }
 }
 
 #Preview {
     ContentView()
+        .modelContainer(for: [Friend.self])
 }
