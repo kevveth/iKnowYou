@@ -31,7 +31,7 @@ class Friend: Hashable {
         friend.image = imageData
         
         // La Jolla Shores
-        let coordinate = Coordinate(latitutude: 32.8578, longitude: -117.2577)
+        let coordinate = Coordinate(latitude: 32.8578, longitude: -117.2577)
         friend.location = Location(name: "La Jolla Shores", coordinate: coordinate)
         
         return friend

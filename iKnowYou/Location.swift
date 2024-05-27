@@ -9,49 +9,37 @@ import Foundation
 import CoreLocation
 import SwiftData
 
+/// Represents a geographic coordinate with latitude and longitude.
 struct Coordinate: Codable {
-    var latitutude: Double
+    var latitude: Double
     var longitude: Double
     
+    /// Converts the `Coordinate` to `CLLocationCoordinate2D`.
     var clLocationCoordinate2D: CLLocationCoordinate2D {
-        CLLocationCoordinate2D(latitude: latitutude, longitude: longitude)
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     
-    init(latitutude: Double, longitude: Double) {
-        self.latitutude = latitutude
+    /// Initializes a `Coordinate` with latitude and longitude values.
+    init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
         self.longitude = longitude
     }
     
+    /// Initializes a `Coordinate` from a `CLLocationCoordinate2D`.
     init(from coordinate: CLLocationCoordinate2D) {
-        self.latitutude = coordinate.latitude
+        self.latitude = coordinate.latitude
         self.longitude = coordinate.longitude
     }
 }
 
 @Model
-final class Location: Codable {
+final class Location {
     var name: String
     var coordinate: Coordinate
     
+    /// Initializes a `Location` with a name and coordinate.
     init(name: String = "Met Location", coordinate: Coordinate) {
         self.name = name
         self.coordinate = coordinate
-    }
-    
-    enum CodingKeys: CodingKey {
-        case name
-        case coordinate
-    }
-    
-    func encode(to encoder: any Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(name, forKey: .name)
-        try container.encode(coordinate, forKey: .coordinate)
-    }
-    
-    required init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
-        coordinate = try container.decode(Coordinate.self, forKey: .coordinate)
     }
 }
