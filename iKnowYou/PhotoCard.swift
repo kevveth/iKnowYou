@@ -12,20 +12,39 @@ import CoreImage
 import PhotosUI
 import StoreKit
 
+import MapKit
+
 struct PhotoCard: View {
     var friend: Friend
-    @State private var selectedImage: PhotosPickerItem?
+    @State private var title: String?
     
+    @State private var selectedImage: PhotosPickerItem?
     @State private var imageData: Data?
     @State private var image: Image?
-    
-    @State private var title: String?
+ 
+    @State private var location: Location?
     
     init(friend: Friend) {
         self.friend = friend
         _title = State(initialValue: friend.name)
         _imageData = State(initialValue: friend.image)
         loadImage()
+        _location = State(initialValue: friend.location)
+    }
+    
+    var startPosition: MapCameraPosition? {
+        if let coordinate = location?.coordinate.clLocationCoordinate2D {
+            let position = MapCameraPosition.region(
+                MKCoordinateRegion (
+                    center: coordinate,
+                    span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                )
+            )
+            
+            return position
+        } else {
+            return nil
+        }
     }
     
     var body: some View {
@@ -53,6 +72,14 @@ struct PhotoCard: View {
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(.blue)
+            
+            if let startPosition {
+                Map(initialPosition: startPosition)
+                    .frame(height: 200)
+                    .padding()
+            } else {
+                Text("No Location.")
+            }
             
         }
         .clipShape(.rect(cornerRadius: 10))

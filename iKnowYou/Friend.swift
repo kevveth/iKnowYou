@@ -13,9 +13,9 @@ import CoreLocation
 class Friend: Hashable {
     var name: String
     @Attribute(.externalStorage) var image: Data?
-    var location: CLLocationCoordinate2D?
+    @Relationship(deleteRule: .cascade) var location: Location?
     
-    init(name: String = "New Friend", image: Data? = nil, location: CLLocationCoordinate2D? = nil) {
+    init(name: String = "New Friend", image: Data? = nil, location: Location? = nil) {
         self.name = name
         self.image = image
         self.location = location
@@ -31,7 +31,8 @@ class Friend: Hashable {
         friend.image = imageData
         
         // La Jolla Shores
-        friend.location = CLLocationCoordinate2D(latitude: 32.8578, longitude: -117.2577)
+        let coordinate = Coordinate(latitutude: 32.8578, longitude: -117.2577)
+        friend.location = Location(name: "La Jolla Shores", coordinate: coordinate)
         
         return friend
     }

@@ -8,28 +8,6 @@
 import SwiftUI
 import SwiftData
 
-@Model
-class Friend: Hashable {
-    var name: String
-    @Attribute(.externalStorage) var image: Data?
-    
-    init(name: String = "New Friend", image: Data? = nil) {
-        self.name = name
-        self.image = image
-    }
-    
-    static var example: Friend {
-        let photo = Friend()
-        photo.name = "Red Panda"
-        
-        let uiImage = UIImage(resource: .redpanda)
-        let imageData = uiImage.pngData()
-        photo.image = imageData
-        
-        return photo
-    }
-}
-
 struct ContentView: View {
     @Query private var friends: [Friend]
     @Environment(\.modelContext) var modelContext
@@ -56,7 +34,7 @@ struct ContentView: View {
             }
             .navigationDestination(for: Friend.self) { friend in
                 PhotoCard(friend: friend)
-                    .frame(width: .infinity, height: 600)
+                    .frame(maxWidth: .infinity)
             }
             
             VStack {

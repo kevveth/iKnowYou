@@ -10,6 +10,9 @@ import SwiftUI
 import CoreImage
 import PhotosUI
 import StoreKit
+
+import MapKit
+
 import SwiftData
 
 struct AddNewPhotoView: View {
@@ -23,11 +26,13 @@ struct AddNewPhotoView: View {
     
     @State var name: String = ""
     @State var imageData: Data? = nil
+    @State var currentLocation: Location? = nil
     
-    var locationFetcher = LocationFetcher()
+    @State private var currentCoordinate: CLLocationCoordinate2D?
+    private let locationFetcher = LocationFetcher()
     
-    init(selectedImage: PhotosPickerItem? = nil) {
-        self.selectedImage = selectedImage
+    init() {
+        locationFetcher.start()
     }
     
     var body: some View {
@@ -58,6 +63,24 @@ struct AddNewPhotoView: View {
                             }
                     }
                 }
+                
+                Section("Location") {
+                    if let coordinate = currentCoordinate {
+                        let position = MapCameraPosition.region(
+                            MKCoordinateRegion(
+                                center: coordinate,
+                                span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+                        )
+                        
+                        Map(initialPosition: position)
+                            .frame(height: 200)
+                    } else {
+                        Text("Fetching locaiton...")
+#if DEBUG
+                        Text("Coordinate: \(String(describing: currentCoordinate))")
+#endif
+                    }
+                }
             }
         }
         //        .frame(maxWidth: .infinity)
@@ -70,13 +93,24 @@ struct AddNewPhotoView: View {
                 }
             }
         }
+        .onAppear {
+            //            locationFetcher.start()
+            if let coordinate = locationFetcher.lastKnownLocation {
+                currentCoordinate = coordinate
+            }
+        }
     }
     
     func addNewPhoto() {
         Task {
-            guard let imageData = try await selectedImage?.loadTransferable(type: Data.self) else { return }
-            let newPhoto = Friend(name: name, image: imageData)
-            modelContext.insert(newPhoto)
+            guard let image = try await selectedImage?.loadTransferable(type: Data.self) else { return }
+            if let currentCoordinate {
+                currentLocation = Location(coordinate: Coordinate(from: currentCoordinate))
+                let newPhoto = Friend(name: name, image: image, location: currentLocation)
+                modelContext.insert(newPhoto)
+            } else {
+                print("Unable to add new photo.")
+            }
         }
     }
 }

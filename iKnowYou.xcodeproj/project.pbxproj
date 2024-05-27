@@ -15,6 +15,8 @@
 		6C18AE312BF870CC00D7863F /* PhotoCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C18AE302BF870CC00D7863F /* PhotoCard.swift */; };
 		6C18AE332BFCAF1C00D7863F /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C18AE322BFCAF1C00D7863F /* ImageLoader.swift */; };
 		6C18AE352BFDE76600D7863F /* LocationFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C18AE342BFDE76600D7863F /* LocationFetcher.swift */; };
+		6C18AE372BFFD97300D7863F /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C18AE362BFFD97300D7863F /* Friend.swift */; };
+		6C18AE392BFFDE6400D7863F /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C18AE382BFFDE6400D7863F /* Location.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		6C18AE302BF870CC00D7863F /* PhotoCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCard.swift; sourceTree = "<group>"; };
 		6C18AE322BFCAF1C00D7863F /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		6C18AE342BFDE76600D7863F /* LocationFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFetcher.swift; sourceTree = "<group>"; };
+		6C18AE362BFFD97300D7863F /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		6C18AE382BFFDE6400D7863F /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,10 +66,12 @@
 			children = (
 				6C18AE1F2BF3668900D7863F /* iKnowYouApp.swift */,
 				6C18AE212BF3668900D7863F /* ContentView.swift */,
+				6C18AE362BFFD97300D7863F /* Friend.swift */,
 				6C18AE342BFDE76600D7863F /* LocationFetcher.swift */,
 				6C18AE322BFCAF1C00D7863F /* ImageLoader.swift */,
 				6C18AE302BF870CC00D7863F /* PhotoCard.swift */,
 				6C18AE2E2BF6049200D7863F /* AddNewPhotoView.swift */,
+				6C18AE382BFFDE6400D7863F /* Location.swift */,
 				6C18AE232BF3668B00D7863F /* Assets.xcassets */,
 				6C18AE252BF3668B00D7863F /* iKnowYou.entitlements */,
 				6C18AE262BF3668B00D7863F /* Preview Content */,
@@ -152,6 +158,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C18AE222BF3668900D7863F /* ContentView.swift in Sources */,
+				6C18AE372BFFD97300D7863F /* Friend.swift in Sources */,
+				6C18AE392BFFDE6400D7863F /* Location.swift in Sources */,
 				6C18AE202BF3668900D7863F /* iKnowYouApp.swift in Sources */,
 				6C18AE352BFDE76600D7863F /* LocationFetcher.swift in Sources */,
 				6C18AE332BFCAF1C00D7863F /* ImageLoader.swift in Sources */,
